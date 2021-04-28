@@ -1,6 +1,7 @@
-# Airflow-2.0
+## Airflow-2.0
 
-STEP 1: Install Docker on EC2
+
+# STEP 1: Install Docker on EC2
 Code:
       sudo yum update -y
       sudo amazon-linux-extras install docker
@@ -12,7 +13,7 @@ TEST:
 
 Refer: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html
 
-STEP 2: Install Docker Compose
+# STEP 2: Install Docker Compose
 Code:
       sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       sudo chmod +x /usr/local/bin/docker-compose
@@ -21,7 +22,7 @@ TEST:
 
 Refer: https://docs.docker.com/compose/install/
 
-STEP 3: Install Airflow 2.0
+# STEP 3: Install Airflow 2.0
 Code:
       mkdir airflow
       cd airflow
