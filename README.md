@@ -7,12 +7,16 @@ STEP 1: Install Docker on EC2
 ```   
 sudo yum update -y
 sudo amazon-linux-extras install docker
-sudo service docker start
-sudo usermod -a -G docker ec2-user
 ```
 STEP 2: Reboot EC2 ( Required for Docker permissions to kick in )
 
-STEP 3: Test Docker (This should run without sudo)
+STEP 3: Start Docker Services
+```   
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+```
+
+STEP 4: Test Docker (This should run without sudo)
 ```
 docker info
 ```
@@ -32,13 +36,43 @@ STEP 2: Test Docker (This should run without sudo, restart EC2 if required)
 docker-compose --version 
 ```
 
+## Clone Github Repository
+
+STEP 1: Clone this repo
+```
+git clone <REPO URL>
+```
+
+STEP 2: Rename folder name to 'airflow'
+```
+mv <REPO FOLDER> airflow
+```
+
+## Rebuilding Apache Airflow Image
+
+STEP 1: Build Image from Scratch
+```
+cd airflow
+docker build . --tag="<IMAGE NAME>"
+```
+
+## Updating Docker Compose
+
+STEP 1: Update RDS Metastore Information
+```
+cd airflow
+vi docker-compose.yaml
+Change AIRFLOW__CORE__SQL_ALCHEMY_CONN AIRFLOW__CELERY__RESULT_BACKEND to your RDS
+Update the fernet key
+Set AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX to true if loadbalancer runs on https:// and 443 port.
+Set AIRFLOW__WEBSERVER__BASE_URL to non https url. i.e http:// url
+```
+
 ## Airflow Setup
 
 STEP 1: Setting up airflow (Note: logs plugins dags folders should be inside "airflow")
 ```
-mkdir airflow
 cd airflow
-curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.0.2/docker-compose.yaml'
 mkdir logs plugins dags                                                                   
 echo -e "AIRFLOW_UID=$(id -u)\nAIRFLOW_GID=0" > .env
 docker-compose up airflow-init
